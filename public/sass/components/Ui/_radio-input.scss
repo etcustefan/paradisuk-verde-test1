@@ -1,0 +1,40 @@
+@use  "../../abstracts/index" as *;
+
+.radio-input {
+    
+    &__input {
+        display: none;
+    }
+
+    &__label {
+        display: flex;
+        align-items: center;
+
+        & > .body-copy {
+            line-height: 1;
+        }
+    }
+
+    &__label-circle {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        @include center-flex;
+        border-radius: 100%;
+        background-color: $color-grey-light;
+        margin-right: 16px;
+
+        &::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border-radius: 100%;
+            background-color: $color-primary;
+            display: none;
+        }
+    }
+
+    &__input:checked ~ &__label > &__label-circle::after {
+        display: block;
+    }
+}

@@ -1,0 +1,105 @@
+@use "../../../abstracts/index" as *;
+
+.home-details {
+    margin-top: 80px;
+
+    &__rules {
+        grid-column: 1 / -1; 
+        margin-bottom: 60px;
+        border-radius: $border-radius;
+        background-color: $color-white;
+    }
+
+    &__rules-header {
+        background-color: $color-primary;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between; 
+        border-radius: $border-radius;
+        user-select: none;
+        backface-visibility: hidden;
+        cursor: pointer;
+
+        & > .heading-4 {
+            font-weight: 500;
+            color: $color-white;
+        }
+    }
+
+    &__rules-header--active > &__rules-arrow {
+        transform: rotate(180deg);
+    }
+
+    &__rules-body {
+        padding: 42px 16px 32px;
+        border: 2px solid $color-primary;
+        margin-top: -10px;
+        border-radius: $border-radius;
+
+        & > :not(:last-child) {
+            margin-bottom: 16px;
+        }
+    }
+
+    &__rules-arrow {
+        width: 32px;
+        height: 16px;
+    }
+
+    &__rules-item {
+        position: relative;
+        padding-left: 40px;
+
+        & > span {
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: 3px;
+            width: 24px;
+            background-color: $color-primary;
+            left: 0;
+            top: 13px;
+        }
+    }
+
+    &__prices {
+        grid-column: 1 / -1;
+        display: flex;
+
+        & > .heading-2 {
+            line-height: 1;
+        }
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+        }
+    }
+
+    &__prices-container {
+        margin-left: 32px;
+        padding-top: 16px;
+
+        @include media-breakpoint-down(sm) {
+            margin-left: 0;
+        }
+    }
+
+    &__prices-row {
+        display: flex;
+        font-weight: 500;
+        margin-bottom: 16px;
+
+        & > span {
+            display: block;
+            color: $color-secondary;
+            width: 90px;
+            min-width: 90px;
+            margin-right: 24px;
+        }
+    }
+}

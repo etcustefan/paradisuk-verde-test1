@@ -1,0 +1,8 @@
+@use '../abstracts' as *;
+
+.footer {
+    margin-top: 160px;
+    background-color: $color-primary-light;
+    border-top: 2px solid $color-primary;
+    height: 200px;
+}

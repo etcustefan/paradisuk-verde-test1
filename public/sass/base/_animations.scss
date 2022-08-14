@@ -1,0 +1,103 @@
+$anim-duration: 1s;
+$anim-timing-function: ease-out;
+
+.animate {
+
+    &__opacity {
+        opacity: 0;
+        transition: opacity .3s $anim-timing-function;
+
+        &--active {
+            opacity: 1;
+        }
+    }
+
+    &__fade-in-up {
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: opacity $anim-duration $anim-timing-function,
+            transform $anim-duration $anim-timing-function;
+
+        &--active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    &__fade-in {
+        opacity: 0;
+        transition: opacity $anim-duration $anim-timing-function;
+
+        &--active {
+            opacity: 1;
+        }
+    }
+
+    &__width {
+        width: 0 !important;
+        transition: width $anim-duration $anim-timing-function;
+
+        &--active {
+            width: 100% !important;
+        }
+    }
+
+    &__width-reverse {
+        width: 100% !important;
+        transition: width $anim-duration $anim-timing-function;
+
+        &--active {
+            width: 0 !important;
+            transition: width .8s $anim-timing-function;
+        }
+    }
+}
+
+.animate-title {
+    @for $i from 2 to 10 {
+        & > :nth-child(#{$i}) > span {
+            transition-delay: $i * 0.1s;
+        }
+    }
+
+    &__title-mask {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow: hidden;
+    }
+
+    &__title-mask span {
+        transform: translateY(100%);
+        transition: transform .5s ease-out;
+    }
+
+    &--active > &__title-mask > span {
+        transform: translateY(0);
+        transition-duration: .8s;
+    }
+
+    &--animate > &__title-mask > span {
+        transform: translateY(0);
+        transition-duration: .8s;
+        transition-delay: .2;
+    }
+}
+
+.animate-rotate {
+    animation-name: animate-rotate;
+    animation-duration: 60s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes animate-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

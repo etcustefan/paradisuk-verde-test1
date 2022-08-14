@@ -1,0 +1,162 @@
+@use '../abstracts'as *;
+
+.u-image-contain {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.u-image-cover {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.u-text-lowercase {
+    text-transform: lowercase;
+}
+
+.u-text-uppercase {
+    text-transform: uppercase;
+}
+
+.u-text-capitalize {
+    text-transform: capitalize;
+}
+
+.text-primary {
+    color: $color-primary;
+}
+
+.text-secondary {
+    color: $color-secondary;
+}
+
+$textAlignments: ("left", "right", "center", "revert");
+
+@each $textAlign in $textAlignments {
+    .text-#{$textAlign} {
+        text-align: #{$textAlign};
+    }
+}
+
+$textTransforms: ("lowercase", "capitalize", "uppercase", "justify");
+
+@each $textCase in $textTransforms {
+    .text-#{$textCase} {
+        text-align: #{$textCase};
+    }
+}
+
+$spaceAmounts: (8, 16, 24, 32, 40, auto);
+
+@each $space in $spaceAmounts {
+    @if $space==auto {
+        .m-#{$space} {
+            margin: #{$space};
+        }
+
+        .mx-#{$space} {
+            margin-left: #{$space};
+            margin-right: #{$space};
+        }
+
+        .my-#{$space} {
+            margin-top: #{$space};
+            margin-bottom: #{$space};
+
+        }
+
+        .ml-#{$space} {
+            margin-left: #{$space};
+        }
+
+        .mr-#{$space} {
+            margin-right: #{$space};
+        }
+
+        .mb-#{$space} {
+            margin-bottom: #{$space};
+        }
+
+        .mt-#{$space} {
+            margin-top: #{$space};
+        }
+    }
+
+    @else {
+        .m-#{$space} {
+            margin: #{$space}px;
+        }
+
+        .mx-#{$space} {
+            margin-left: #{$space}px;
+            margin-right: #{$space}px;
+        }
+
+        .my-#{$space} {
+            margin-top: #{$space}px;
+            margin-bottom: #{$space}px;
+
+        }
+
+        .ml-#{$space} {
+            margin-left: #{$space}px;
+        }
+
+        .mr-#{$space} {
+            margin-right: #{$space}px;
+        }
+
+        .mb-#{$space} {
+            margin-bottom: #{$space}px;
+        }
+
+        .mt-#{$space} {
+            margin-top: #{$space}px;
+        }
+
+        .p-#{$space} {
+            padding: #{$space}px;
+        }
+
+        .px-#{$space} {
+            padding-left: #{$space}px;
+            padding-right: #{$space}px;
+        }
+
+        .py-#{$space} {
+            padding-top: #{$space}px;
+            padding-bottom: #{$space}px;
+
+        }
+
+        .pl-#{$space} {
+            padding-left: #{$space}px;
+        }
+
+        .pr-#{$space} {
+            padding-right: #{$space}px;
+        }
+
+        .pb-#{$space} {
+            padding-bottom: #{$space}px;
+        }
+
+        .pt-#{$space} {
+            padding-top: #{$space}px;
+        }
+    }
+}
+
+$displayModes: ("none", "block", "flex", "grid", "inline", "inline-block", "unset");
+
+@each $displayMode in $displayModes {
+    .display-#{$displayMode} {
+        display: #{$displayMode};
+    }
+}

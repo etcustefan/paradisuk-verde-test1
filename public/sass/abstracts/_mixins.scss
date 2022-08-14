@@ -1,0 +1,246 @@
+@use './variables' as *;
+
+//center items
+@mixin center-abs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin center-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin cover-abs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+//set fixed aspect ratio to an element
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+    $padding: unquote( ( $y / $x ) * 100 + '%' );
+    @if $pseudo {
+        &:before {
+            @include pseudo($pos: relative);
+            width: 100%;
+            padding-top: $padding;
+        }
+    } @else {
+        padding-top: $padding;
+    }
+}
+
+//sets the same style for the input placeholder
+@mixin input-placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}
+
+//media breakpoints
+
+@mixin media-breakpoint-up($breakpoint) {
+    
+    @if $breakpoint == xxs {
+        @media only screen and (min-width: $breakpoint-xxs) {
+            @content
+        };
+    }
+
+    @if $breakpoint == xs {
+        @media only screen and (min-width: $breakpoint-xs) {
+            @content
+        };
+    }
+    
+    @if $breakpoint == s {
+        @media only screen and (min-width: $breakpoint-s) {
+            @content
+        };
+    }
+
+    @if $breakpoint == sm {
+        @media only screen and (min-width: $breakpoint-sm) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == md {
+        @media only screen and (min-width: $breakpoint-md) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == lg {
+        @media only screen and (min-width: $breakpoint-lg) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == x {
+        @media only screen and (min-width: $breakpoint-x) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xl {
+        @media only screen and (min-width: $breakpoint-xl) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xli {
+        @media only screen and (min-width: $breakpoint-xli) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xi {
+        @media only screen and (min-width: $breakpoint-xi) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fhd {
+        @media only screen and (min-width: $breakpoint-fhd) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fhds {
+        @media only screen and (min-width: $breakpoint-fhds) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == tk {
+        @media only screen and (min-width: $breakpoint-2k) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == ik {
+        @media only screen and (min-width: $breakpoint-ik) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fk {
+        @media only screen and (min-width: $breakpoint-4k) {
+            @content
+        };
+    }
+
+    @else {
+        @media only screen and (min-width: #{$breakpoint}px) {
+            @content
+        };
+    }
+}
+
+@mixin media-breakpoint-down($breakpoint) {
+    
+    @if $breakpoint == xxs {
+        @media only screen and (max-width: $breakpoint-xxs) {
+            @content
+        };
+    }
+    
+    @if $breakpoint == xs {
+        @media only screen and (max-width: $breakpoint-xs) {
+            @content
+        };
+    }
+    
+    @if $breakpoint == s {
+        @media only screen and (max-width: $breakpoint-s) {
+            @content
+        };
+    }
+    
+    @if $breakpoint == sm {
+        @media only screen and (max-width: $breakpoint-sm) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == md {
+        @media only screen and (max-width: $breakpoint-md) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == lg {
+        @media only screen and (max-width: $breakpoint-lg) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == x {
+        @media only screen and (max-width: $breakpoint-x) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xl {
+        @media only screen and (max-width: $breakpoint-xl) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xli {
+        @media only screen and (max-width: $breakpoint-xli) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == xi {
+        @media only screen and (max-width: $breakpoint-xi) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fhd {
+        @media only screen and (max-width: $breakpoint-fhd) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fhds {
+        @media only screen and (max-width: $breakpoint-fhds) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == tk {
+        @media only screen and (max-width: $breakpoint-2k) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == ik {
+        @media only screen and (max-width: $breakpoint-ik) {
+            @content
+        };
+    }
+
+    @else if $breakpoint == fk {
+        @media only screen and (max-width: $breakpoint-4k) {
+            @content
+        };
+    }
+
+    @else {
+        @media only screen and (max-width: #{$breakpoint}px) {
+            @content
+        };
+    }
+}

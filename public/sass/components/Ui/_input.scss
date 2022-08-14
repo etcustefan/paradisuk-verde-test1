@@ -1,0 +1,30 @@
+@use '../../abstracts' as *;
+@use '../../base/typography' as *;
+
+.input-group {
+    max-width: 600px;
+    width: 100%; 
+
+    &__label {
+        display: block;
+        @extend %base-text-style;
+        margin-bottom: 8px;
+    }
+
+    &__input {
+        height: 48px;
+        padding: 0 12px;
+        border-radius: $border-radius;
+        outline: none;
+        border: 1px solid $color-black;
+        background-color: $color-white;
+        width: 100%;
+        @extend %base-text-style;
+    }
+
+    &__error {
+        @extend .small-copy;
+        color: $color-danger;
+        font-weight: 500;
+    }
+}

@@ -1,0 +1,38 @@
+@use '../../abstracts' as *;
+@use '../../base/typography';
+
+.button {
+    &,
+    &:link,
+    &:visited {
+        @extend %base-text-style;
+        color: $color-white;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        min-width: 80px;
+        background-color: $color-secondary;
+        border: none;
+        outline: none;
+        border-radius: $border-radius;
+        width: min-content;
+        white-space: nowrap;
+        text-decoration: none;
+        border: 2px solid $color-secondary;
+        transition: background-color .2s ease-out,
+                    color .2s ease-out;
+        cursor: pointer;
+    }
+
+    &:hover {
+        @include media-breakpoint-up(lg) {
+            background-color: $color-white;
+            color: $color-secondary;
+        }
+    }
+
+    &:focus {
+        outline: none;
+    }
+}

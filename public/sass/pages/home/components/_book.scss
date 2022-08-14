@@ -1,0 +1,43 @@
+@use  "../../../abstracts/index" as *;
+
+.home-book {
+    margin-top: 100px;
+
+    &.container {
+        grid-template-columns: unset;
+    }
+    
+    &__contact-info {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        margin-top: 16px;
+    
+        & > span {
+            width: 80px;
+            min-width: 80px;
+        }
+
+        & > .link {
+            text-decoration: underline;
+            margin-left: 16px;
+        }
+    }
+
+    &__contact-icon {
+        width: 32px;
+        height: 32px;
+        margin-right: 16px;
+    }
+
+    &__container {
+        padding: 32px 24px;
+        border-radius: $border-radius;
+        border: 2px solid $color-primary;
+    }
+
+    &__map {
+        height: 600px;
+        background-color: $color-grey-light;
+    }
+}

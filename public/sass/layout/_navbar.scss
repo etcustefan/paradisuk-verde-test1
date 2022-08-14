@@ -1,0 +1,159 @@
+@use '../abstracts' as *;
+
+.navbar {
+    position: relative;
+    border-bottom: 2px solid $color-primary-light;
+    z-index: z('site-nav');
+
+    @include media-breakpoint-down(lg) {
+        border-bottom: none;
+    }
+
+    & > .container {
+        display: flex;
+        grid-template-columns: unset;
+        grid-gap: unset;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    &__mask {
+        display: none;
+        @include cover-abs;
+        background-color: $color-white;
+        z-index: 1;
+
+        @include media-breakpoint-down(lg) {
+            display: block;
+        }
+    }
+
+    &__logo {
+        position: relative;
+        height: 64px;
+        width: 130px;
+        z-index: 2;
+    }
+
+    &__menu-items {
+        display: flex;
+        align-items: center;
+        z-index: 0;
+    
+        @include media-breakpoint-down(lg) {
+            position: absolute;
+            left: 0;
+            top: -193px;
+            flex-direction: column;
+            background-color: $color-white;
+            border-bottom: 2px solid $color-primary;
+            padding: 24px 0 32px;
+            z-index: 2;
+            width: 100%;
+            transition: top .3s ease-out;
+            z-index: -1;
+
+            & > :not(:last-child) {
+                margin-right: 0;
+                margin-bottom: 24px;
+            }
+        }
+
+        &--active {
+            @include media-breakpoint-down(lg) {
+                top: 90px;
+            }
+        }
+    }
+
+    &__menu-item {
+        &,
+        &:link,
+        &:visited {
+            margin-right: 24px;
+            text-decoration: none;
+
+            @include media-breakpoint-down(lg) {
+                margin-right: 0;
+            }
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__menu-toggle {
+        position: relative;
+        display: none;
+        height: 40px;
+        width: 40px;
+        z-index: 2;
+
+        @include media-breakpoint-down(lg) {
+            display: block;
+        }
+    }
+
+    &__menu-icon {
+        position: relative;
+        margin-top: 20px;
+
+        &,
+        &::before,
+        &::after {
+            display: block;
+            height: 2px;
+            width: 40px;
+            background-color: $color-secondary;
+            transition: width .2s ease;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            transition: all .2s ease;
+        }
+
+        &::before {
+            top: -10px;
+        }
+
+        &::after {
+            top: 10px;
+        }
+    }
+
+    &__menu-toggle--active > &__menu-icon {
+        width: 0;
+
+        &::before {
+            top: 0;
+            transform: rotate(135deg);
+        }
+
+        &::after {
+            top: 0;
+            transform: rotate(-135deg);
+        }
+    }
+
+    &__menu-fb {
+        width: 32px;
+        height: 32px;
+        margin: 0 32px;
+        transition: opacity .2s ease-out;
+
+        @include media-breakpoint-down(lg) {
+            margin: 0;
+        }
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+}

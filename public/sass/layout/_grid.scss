@@ -1,0 +1,39 @@
+@use '../abstracts'as *;
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 24px;
+    width: 100%;
+    max-width: 1344px;
+    padding: 0 60px;
+    margin: 0 auto;
+
+    @include media-breakpoint-down(lg) {
+        grid-gap: 16px;
+    }
+    
+    @include media-breakpoint-down(md) {
+        padding: 0 30px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding: 0 16px;
+    }
+}
+
+.section-m-top {
+    margin-top: 200px;
+
+    &--small {
+        margin-top: 120px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 100px;
+
+        &--small {
+            margin-top: 60px;
+        }
+    }
+}

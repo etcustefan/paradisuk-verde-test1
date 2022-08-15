@@ -165,10 +165,10 @@
                     <input type="text" name="stand" id="stand" class="input-group__input">
                 </div>
                 <div class="input-group mt-16">
-                    <label for="count_fisher" class="input-group__label">
+                    <label for="count_fishers" class="input-group__label">
                         Pescari
                     </label>
-                    <input style="margin:6px;" type="number" name="count_fishers" id="count_fishers"
+                    <input  type="number" name="count_fishers" id="count_fishers"
                            class="align-items-baseline" max="16" min="1">
                 </div>
                 <div class="input-group mt-16">

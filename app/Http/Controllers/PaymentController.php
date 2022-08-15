@@ -2,30 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use App\Models\Rezervari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Omnipay\Omnipay;
 use Stripe\Charge;
-use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    private \Omnipay\Common\GatewayInterface $gateway;
 
     public function __construct()
     {
-        $this->gateway = Omnipay::create('PayPal_Rest');
-        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
-        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
-        $this->gateway->setTestMode(true);
     }
 
-    public function test ()
+    public function test()
     {
         return view('test');
+    }
+
+    public function checkout()
+    {
+        return view('checkout');
     }
 
     public function checkBooking(Request $request)
@@ -123,7 +120,7 @@ class PaymentController extends Controller
                     'to_date' => $data['to_date'],
                 ]
             );
-        }else{
+        } else {
             return redirect('/?error=true');
         }
     }
@@ -131,58 +128,23 @@ class PaymentController extends Controller
     public function pay(Request $request)
 
     {
-        try {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            $response = $this->gateway->purchase(array(
-                'amount' => $request['price'],
-                'currency' => env('PAYPAL_CURRENCY'),
-                'returnUrl' => url('success'),
-                'cancelUrl' => url('error')
-            ))->send();
+        Charge::create([
+            "amount" => 200 * 100,
+            "currency" => "ron",
+            "source" => $request->stripeToken,
+            "description" => "Plata test."
+        ]);
 
-            if ($response->isRedirect()) {
-                $response->redirect();
-            } else {
-                return $response->getMessage();
-            }
+        //Session::flash('success', 'Payment successful!');
 
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-        }
+        return redirect('/test?success=true')->with(Session::flash('success', 'Payment successful!'));
     }
 
-    public function success(Request $request)
+    public function cancel()
     {
-        if ($request->input('paymentId') && $request->input('PayerID')) {
-            $transaction = $this->gateway->completePurchase(array(
-                'payer_id' => $request->input('PayerID'),
-                'transactionReference' => $request->input('paymentId')
-            ));
-
-            $response = $transaction->send();
-
-            if ($response->isSuccessful()) {
-
-                $arr = $response->getData();
-
-                $payment = new Payment();
-                $payment->payment_id = $arr['id'];
-                $payment->payer_id = $arr['payer']['payer_info']['payer_id'];
-                $payment->payer_email = $arr['payer']['payer_info']['email'];
-                $payment->amount = $arr['transactions'][0]['amount']['total'];
-                $payment->currency = env('PAYPAL_CURRENCY');
-                $payment->payment_status = $arr['state'];
-
-                $payment->save();
-
-                return redirect('/?transaction=success')->with('success', "Payment is Successfully. Your Transaction Id is : " . $arr['id']);
-
-            } else {
-                return $response->getMessage();
-            }
-        } else {
-            return redirect('/?error=payment_declined');
-        }
+        return redirect('/pay?cancel=true');
     }
 
     public function error()

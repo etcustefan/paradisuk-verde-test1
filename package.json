@@ -2,13 +2,22 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "watch:sass": "sass --source-map public/sass/main.scss public/css/style.css -w",
+        "compile:sass": "sass --source-map public/sass/main.scss public/css/style.comp.css",
+        "prefix:css": "postcss --use autoprefixer -b \"last 10 versions\" public/css/style.comp.css -o public/css/style.prefix.css",
+        "compress:css": "sass --style=compressed public/css/style.prefix.css public/css/style.css",
+        "build:css": "npm-run-all compile:sass prefix:css compress:css"
     },
     "devDependencies": {
         "axios": "^0.27",
         "laravel-vite-plugin": "^0.5.0",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
-        "vite": "^3.0.0"
+        "vite": "^3.0.0",
+        "autoprefixer": "^10.4.7",
+        "postcss": "^8.4.14",
+        "postcss-cli": "^9.1.0",
+        "sass": "^1.53.0"
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="col-md-7">
-        <h5>DETALII DESPRE REZERVARE</h5>
+        <h5>DETALII DESPRE REZERVARE !!!!</h5>
         <form action="<?php echo route('checkout') ?>" method="get">
             <input type="hidden" value="<?= $price ?>" name="price">
             <input type="hidden" value="<?= $name ?>" name="name">

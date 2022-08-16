@@ -8,7 +8,7 @@
             <h3 class="heading-3">
                 Pescuit sportiv
             </h3>
-            <a href="#" class="button">
+            <a href="#rezerva_loc" class="button">
                 Rezerva loc
             </a>
         </div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="home-details__prices">
+        <div class="home-details__prices" id="prices">
             <h2 class="heading-2">
                 Preturi:
             </h2>
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <div class="home-book container">
+    <div class="home-book container" id="rezerva_loc">
         <h2 class="heading-2">
             Rezerva un loc la pescuit
         </h2>
@@ -100,7 +100,7 @@
                 </div>
             </a>
         </div>
-        <div class="home-book__container" if="#rezerva-loc">
+        <div class="home-book__container" href="#rezerva-loc">
             <h3 class="heading-3">
                 Alege un loc
             </h3>

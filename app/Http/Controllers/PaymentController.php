@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\CardException;
 use App\Models\Rezervari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use JetBrains\PhpStorm\NoReturn;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Stripe\Charge;
+use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
 class PaymentController extends Controller
@@ -102,7 +102,7 @@ class PaymentController extends Controller
                 'price' => $data['price'],
             ]);
 
-            return view('stripe',
+            return view('checkBooking',
                 [
                     'name' => $data['name'],
                     'price' => $data['price'],
@@ -119,13 +119,11 @@ class PaymentController extends Controller
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function checkout(Request $request)
     {
         return view('checkout', [
-            'price' => $request->get('price'),
+            'price' => $request->price,
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'stand' => $request->stand,
@@ -138,37 +136,30 @@ class PaymentController extends Controller
 
     public function pay(Request $request)
     {
-        $description = [];
-        $description = [
-            'Nume' => $request->name,
-            'Numar de telefon' => $request->phone_number,
-            'Standuri' => $request->stand,
-            'Start' => $request->from_date,
-            'End' => $request->to_date,
-            'Pret' => $request->price
-        ];
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            Charge::create([
+                "amount" => $request->price * 100,
+                "currency" => "ron",
+                "source" => $request->stripeToken,
+                "description" => 'Paradisul Verde va aminteste ca aveti rezervare in data de ' . $request->from_date . "\n" .
+                    ' email-ul dvs: ' . $request->email . "\n" .
+                    'locuri alese: ( ' . $request->stand . ' )' . "\n"
+            ]);
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        Charge::create([
-            "amount" => $request->price * 100,
-            "currency" => "ron",
-            "source" => $request->stripeToken,
-            "description" => json_encode($description , JSON_INVALID_UTF8_IGNORE)
-        ]);
+            Session::flash('success', 'Payment successful!');
+            return redirect('/test');
 
-        Session::flash('success', 'Payment successful!');
 
-        return redirect('/test');
+        } catch (CardException $cardException) {
+            Session::flash('message', $cardException->getMessage());
+            return back();
+        } catch (ApiErrorException $apiErrorException) {
+            Session::flash('message', $apiErrorException->getMessage());
+            return back();
+        }
+
     }
 
-    public function cancel()
-    {
-        return redirect('/pay?cancel=true');
-    }
-
-    public function error()
-    {
-        return redirect('/?error=payment_declined');
-    }
 
 }

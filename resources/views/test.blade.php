@@ -11,7 +11,7 @@
                         <p>{{ Session::get('success') }}</p>
                     </div>
                 @endif
-            <form action="<?= route('checkout') ?>" method="get">
+            <form action="<?= route('pay') ?>" method="get">
                 <input type="hidden" value="200" name="price">
                 <button id="checkout-button" type="submit" class="button"><span id="button-text">Catre plata</span></button>
             </form>

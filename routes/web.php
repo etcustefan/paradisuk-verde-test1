@@ -19,11 +19,11 @@ Route::get('/', function () {
     return view('index');
 })->name('/');
 
+Route::post('pay', [PaymentController::class, 'pay'])->name('pay');
 
 Route::get('checkBooking', [PaymentController::class, 'checkBooking'])->name('checkBooking');
 Route::get('test', [PaymentController::class, 'test'])->name('test');
 Route::get('checkout', [PaymentController::class, 'checkout'])->name('checkout');
-Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
 
 
 

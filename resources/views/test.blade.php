@@ -5,6 +5,12 @@
                 <h5>
                     blablalblabla rezervarea blblalbalblab
                 </h5>
+                @if (Session::has('success'))
+                    <div class="alert alert-success text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <p>{{ Session::get('success') }}</p>
+                    </div>
+                @endif
             <form action="<?= route('checkout') ?>" method="get">
                 <input type="hidden" value="200" name="price">
                 <button id="checkout-button" type="submit" class="button"><span id="button-text">Catre plata</span></button>

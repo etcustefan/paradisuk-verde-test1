@@ -5,24 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Rezervari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use JetBrains\PhpStorm\NoReturn;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Stripe\Charge;
 use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-
-    public function __construct()
-    {
-    }
-
     public function test()
     {
         return view('test');
-    }
-
-    public function checkout()
-    {
-        return view('checkout');
     }
 
     public function checkBooking(Request $request)
@@ -112,7 +105,7 @@ class PaymentController extends Controller
             return view('stripe',
                 [
                     'name' => $data['name'],
-                    'price' => $price,
+                    'price' => $data['price'],
                     'phone_number' => $data['phone_number'],
                     'count_fishers' => $data['count_fishers'],
                     'stand' => $data['stand'],
@@ -121,25 +114,51 @@ class PaymentController extends Controller
                 ]
             );
         } else {
-            return redirect('/?error=true');
+            return back('error');
         }
     }
 
-    public function pay(Request $request)
-
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function checkout(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
-        Charge::create([
-            "amount" => 200 * 100,
-            "currency" => "ron",
-            "source" => $request->stripeToken,
-            "description" => "Plata test."
+        return view('checkout', [
+            'price' => $request->get('price'),
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'stand' => $request->stand,
+            'count_fishers' => $request->count_fishers,
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
         ]);
 
-        //Session::flash('success', 'Payment successful!');
+    }
 
-        return redirect('/test?success=true')->with(Session::flash('success', 'Payment successful!'));
+    public function pay(Request $request)
+    {
+        $description = [];
+        $description = [
+            'Nume' => $request->name,
+            'Numar de telefon' => $request->phone_number,
+            'Standuri' => $request->stand,
+            'Start' => $request->from_date,
+            'End' => $request->to_date,
+            'Pret' => $request->price
+        ];
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Charge::create([
+            "amount" => $request->price * 100,
+            "currency" => "ron",
+            "source" => $request->stripeToken,
+            "description" => json_encode($description , JSON_INVALID_UTF8_IGNORE)
+        ]);
+
+        Session::flash('success', 'Payment successful!');
+
+        return redirect('/test');
     }
 
     public function cancel()

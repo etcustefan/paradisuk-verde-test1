@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
 use App\Models\Rezervari;
@@ -10,12 +12,20 @@ use Illuminate\Support\Facades\Session;
 use Stripe\Charge;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
+use Stripe\StripeClient;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use UnexpectedValueException;
 
 class PaymentController extends Controller
 {
     public function test()
     {
         return view('test');
+    }
+
+    public function test2()
+    {
+        return view('test2');
     }
 
     public function checkBooking(Request $request)
@@ -122,6 +132,7 @@ class PaymentController extends Controller
      */
     public function checkout(Request $request)
     {
+
         return view('checkout', [
             'price' => $request->price,
             'name' => $request->name,
@@ -134,32 +145,45 @@ class PaymentController extends Controller
 
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function pay(Request $request)
     {
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
-            Charge::create([
+            $stripe = new StripeClient(env('STRIPE_SECRET'));
+            $stripe->setupIntents->create(['usage' => 'on_session']);
+
+        $d =     Charge::create([
                 "amount" => $request->price * 100,
-                "currency" => "ron",
+                "currency" => "RON",
                 "source" => $request->stripeToken,
-                "description" => 'Paradisul Verde va aminteste ca aveti rezervare in data de ' . $request->from_date . "\n" .
-                    ' email-ul dvs: ' . $request->email . "\n" .
-                    'locuri alese: ( ' . $request->stand . ' )' . "\n"
+                "confirm" => true,
+             'metadata' => ['integration_check' => 'accept_a_payment'],
             ]);
 
-            Session::flash('success', 'Payment successful!');
-            return redirect('/test');
+            dd($d);
 
+            Session::flash('success', 'Payment successful!');
+            return to_route('test');
 
         } catch (CardException $cardException) {
             Session::flash('message', $cardException->getMessage());
             return back();
+
         } catch (ApiErrorException $apiErrorException) {
             Session::flash('message', $apiErrorException->getMessage());
+            return back();
+
+        } catch (MethodNotAllowedException $methodNotAllowedException) {
+            Session::flash('message', $methodNotAllowedException->getMessage());
+            return back();
+        } catch (UnexpectedValueException  $unexpectedValueException) {
+            Session::flash('message', $unexpectedValueException->getMessage());
             return back();
         }
 
     }
-
 
 }

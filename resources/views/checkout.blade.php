@@ -62,8 +62,9 @@
                     @endif
 
                     <form role="form" action="<?php  echo route('pay') ?>" method="post" class="require-validation"
-                          data-cc-on-file="false" data-stripe-publishable-key="<?php echo env('STRIPE_KEY') ?>"
-                          id="payment-form">
+                          data-cc-on-file="false"
+                          id="payment-form"
+                          data-stripe-publishable-key="<?php echo env('STRIPE_KEY') ?>">
                         @csrf
 
                         <div class='form-row row'>
@@ -83,7 +84,7 @@
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Card Number</label> <input
-                                     class='form-control card-number' size='20'
+                                    class='form-control card-number' size='20'
                                     type='text'>
                             </div>
                         </div>
@@ -144,10 +145,10 @@
 
 <script type="text/javascript">
 
-   function hideError (){
-      let errorCardMessage = document.getElementById('error');
-       errorCardMessage.style.display = 'none';
-   }
+    function hideError (){
+        let errorCardMessage = document.getElementById('error');
+        errorCardMessage.style.display = 'none';
+    }
     $(function () {
 
         /*------------------------------------------

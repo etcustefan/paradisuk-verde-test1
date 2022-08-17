@@ -11,6 +11,7 @@
             <a href="#rezerva_loc" class="button">
                 Rezerva loc
             </a>
+
         </div>
         <div class="home-header__image">
             <img src="./assets/images/banner.jpg" alt="Iaz Paradisul Verde" class="u-image-cover">
@@ -137,7 +138,8 @@
                     </label>
                 </div>
             </div> -->
-            <form action="<?php echo route('checkBooking') ?>" method="get" class="mt-24 ">
+            <form action="<?php echo route('checkBooking') ?>" method="post" class="mt-24 ">
+                @csrf
                 <div class="input-group">
                     <label for="name" class="input-group__label">
                         Nume complet

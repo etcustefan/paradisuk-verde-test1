@@ -11,7 +11,17 @@
                         <p>{{ Session::get('success') }}</p>
                     </div>
                 @endif
-            <form action="<?= route('pay') ?>" method="get">
+
+                @if (Session::has('message'))
+                    <div class="alert error alert-danger text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        <p>{{ Session::get('message') }}</p>
+                    </div>
+                @endif
+
+
+            <form action="<?= route('checkout') ?>" method="get">
+                @csrf
                 <input type="hidden" value="200" name="price">
                 <button id="checkout-button" type="submit" class="button"><span id="button-text">Catre plata</span></button>
             </form>

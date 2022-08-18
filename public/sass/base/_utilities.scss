@@ -36,6 +36,14 @@
     color: $color-secondary;
 }
 
+.text-danger {
+    color: $color-danger;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
 $textAlignments: ("left", "right", "center", "revert");
 
 @each $textAlign in $textAlignments {

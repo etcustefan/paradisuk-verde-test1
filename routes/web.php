@@ -20,6 +20,9 @@ Route::get('/', function () {
 })->name('/');
 
 
+Route::get('/home_test', [PaymentController::class, 'home_test'])->name('home_test');
+Route::get('/confirm', [PaymentController::class, 'checkBooking'])->name('confirm');
+Route::get('/delete', [PaymentController::class, 'destroy'])->name('delete');
 
 Route::post('checkBooking', [PaymentController::class, 'checkBooking'])->name('checkBooking');
 Route::get('checkout', [PaymentController::class, 'checkout'])->name('checkout');

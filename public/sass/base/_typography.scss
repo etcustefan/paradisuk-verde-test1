@@ -13,7 +13,7 @@
     }
 
     @include media-breakpoint-up(x) {
-        font-size: 64px;
+        font-size: 48px;
         line-height: 1.681;
     }
 }
@@ -27,7 +27,7 @@
     color: $color-black;
 
     @include media-breakpoint-up(x) {
-        font-size: 46px;
+        font-size: 36px;
         line-height: 1.681;
     }
 }
@@ -41,7 +41,7 @@
     color: $color-black;
 
     @include media-breakpoint-up(x) {
-        font-size: 29px;
+        font-size: 24px;
         line-height: 1.681;
     }
 }
@@ -55,7 +55,7 @@
     color: $color-black;
 
     @include media-breakpoint-up(x) {
-        font-size: 19px;
+        font-size: 16px;
         line-height: 1.681;
     }
 }
@@ -69,7 +69,7 @@
     color: $color-black;
 
     @include media-breakpoint-up(x) {
-        font-size: 19px;
+        font-size: 16px;
         line-height: 1.681;
     }
 }
@@ -82,12 +82,12 @@
     font-family: 'Poppins';
     font-size: 14px;
     font-weight: 400;
-    line-height: 18px;
+    line-height: 14px;
     letter-spacing: 0.48px;
     color: $color-black;
 
     @include media-breakpoint-up(x) {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.681;
     }
 }

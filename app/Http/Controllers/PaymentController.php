@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use http\Env\Url;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
@@ -23,46 +29,62 @@ class PaymentController extends Controller
         return view('test');
     }
 
-    public function test2()
+    public function home_test()
     {
-        return view('test2');
+        return view('index2');
+    }
+
+    public function destroy(Request $request)
+    {
+        $rows = Rezervari::where('stand', $request->stand)
+            ->where('from_date', $request->from_date)
+            ->where('to_date', $request->to_date)
+            ->where('price', $request->price)
+            ->where('name', $request->name)->get('id');
+        foreach ($rows as $elem) {
+            Rezervari::destroy($elem['id']);
+        }
+
+        return redirect(url('home_test#rezerva_loc'));
     }
 
     public function checkBooking(Request $request)
     {
         $input = [
-            'name' => $request->get('name'),
-            'phone_number' => $request->get('phone_number'),
-            'stand' => $request->get('stand'),
-            'count_fishers' => $request->get('count_fishers'),
-            'from_date' => $request->get('from_date'),
-            'to_date' => $request->get('to_date')
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'stand' => $request->stand,
+            'count_fishers' => $request->count_fishers,
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date
         ];
+
+
+        $days = date_diff(date_create($input['to_date']), date_create($input['from_date']))->days;
         $stand = $input['stand'];
         $countStands = substr_count($stand, ',') + 1;
         $price = '';
-        $from_date = explode('.', $input['from_date']);
-        $to_date = explode('.', $input['to_date']);
-        $days = intval($to_date[0]) - intval($from_date[0]);
+        $from_date = explode('-', $input['from_date']);
+        $to_date = explode('-', $input['to_date']);
 
-        if ($days == 0) {
+        if ($input['to_date'] == null) {
             $price = ($countStands * 50);
             $input['count_fishers'] = $countStands;
+            $program = '06:00 - 18:00';
         } else if ($days > 0) {
             $price = ($countStands * 100 + $input['count_fishers'] * 100) * $days;
+            $nights = [];
+            $start = new DateTime($input['from_date']);
+            $end = (new DateTime($input['to_date']));
+            $interval = new DateInterval('P1D');
+            $period = new DatePeriod($start, $interval, $end);
+
+            foreach ($period as $dt) {
+                $nights [] = $dt->format("d-m");
+            }
+            $program = implode(',' , $nights);
         }
 
-        $nights = [];
-        if ($days == 0) {
-            $nights [] = '06:00 - 18:00';
-        }
-        if ($days == 1) {
-            $nights [] = intval($from_date[0]);
-        } else {
-            for ($i = 0; $i < $days; $i++) {
-                $nights [] = intval($from_date[0]) + $i;
-            }
-        }
         $data = [
             'name' => $input['name'],
             'phone_number' => $input['phone_number'],
@@ -70,10 +92,14 @@ class PaymentController extends Controller
             'count_stands' => $countStands,
             'count_fishers' => $input['count_fishers'],
             'from_date' => $input['from_date'],
-            'to_date' => $input['to_date'],
-            'nights' => implode(',', $nights),
+            'nights' => $program,
             'price' => $price,
         ];
+        if ($input['to_date'] === null) {
+            $data['to_date'] = $input['from_date'];
+        } else {
+            $data['to_date'] = $request->to_date;
+        }
         $searchHouses = array();
         $searchNights = array();
 
@@ -98,34 +124,43 @@ class PaymentController extends Controller
         foreach ($booking as $obj) {
             $dataObj [] = $obj;
         }
-
-        if (empty($dataObj)) {
-            Rezervari::updateOrCreate([
-                'name' => $data['name'],
-                'phone_number' => $data['phone_number'],
-                'stand' => $data['stand'],
-                'count_stands' => $data['count_stands'],
-                'count_fishers' => $data['count_fishers'],
-                'from_date' => $data['from_date'],
-                'to_date' => $data['to_date'],
-                'nights' => $data['nights'],
-                'price' => $data['price'],
-            ]);
-
-            return view('checkBooking',
-                [
+        try {
+            if (empty($dataObj)) {
+                Rezervari::updateOrCreate([
                     'name' => $data['name'],
-                    'price' => $data['price'],
                     'phone_number' => $data['phone_number'],
-                    'count_fishers' => $data['count_fishers'],
                     'stand' => $data['stand'],
+                    'count_stands' => $data['count_stands'],
+                    'count_fishers' => $data['count_fishers'],
                     'from_date' => $data['from_date'],
                     'to_date' => $data['to_date'],
-                ]
-            );
-        } else {
-            return back('error');
+                    'nights' => $data['nights'],
+                    'price' => $data['price'],
+                ]);
+
+                return view('confirm',
+                    [
+                        'name' => $data['name'],
+                        'price' => $data['price'],
+                        'phone_number' => $data['phone_number'],
+                        'count_fishers' => $data['count_fishers'],
+                        'stand' => $data['stand'],
+                        'from_date' => $data['from_date'],
+                        'to_date' => $data['to_date'],
+                    ]
+                );
+            }else{
+                Session::flash('type_error' , 'Oops! Se pare ca este deja o casuta luata in seara respectiva :)');
+                return redirect('home_test#rezerva_loc');
+            }
+        }catch (\TypeError $typeError){
+            Session::flash('type_error' , $typeError->getMessage());
+            return redirect('home_test#rezerva_loc');
+        }catch (QueryException $queryException){
+            Session::flash('type_error' , $queryException->getMessage());
+            return redirect('home_test#rezerva_loc');
         }
+
     }
 
     /**
@@ -138,9 +173,7 @@ class PaymentController extends Controller
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'stand' => $request->stand,
-            'count_fishers' => $request->count_fishers,
             'from_date' => $request->from_date,
-            'to_date' => $request->to_date,
         ]);
 
     }
@@ -152,18 +185,18 @@ class PaymentController extends Controller
     {
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
-            $stripe = new StripeClient(env('STRIPE_SECRET'));
-            $stripe->setupIntents->create(['usage' => 'on_session']);
 
-        $d =     Charge::create([
+            Charge::create([
                 "amount" => $request->price * 100,
                 "currency" => "RON",
                 "source" => $request->stripeToken,
-                "confirm" => true,
-             'metadata' => ['integration_check' => 'accept_a_payment'],
+                'metadata' => ['integration_check' => 'accept_a_payment'],
+                'description' => 'Nume: ' . $request->name . "\n" .
+                    "Contact: " . $request->phone_number . '/' . $request->email . "\n" .
+                    'Locuri alese: ' . $request->stand . "\n" .
+                    'Va asteptam in data de ' . $request->from_date . "\n"
             ]);
 
-            dd($d);
 
             Session::flash('success', 'Payment successful!');
             return to_route('test');

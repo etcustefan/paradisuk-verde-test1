@@ -123,7 +123,7 @@ class PaymentController extends Controller
             }
         } catch (\TypeError $typeError) {
             Session::flash('type_error', $typeError->getMessage());
-            return redirect('home_test#rezerva_loc');
+            return redirect('/#rezerva_loc');
         } catch (QueryException $queryException) {
             Session::flash('type_error', $queryException->getMessage());
             return redirect('/#rezerva_loc');

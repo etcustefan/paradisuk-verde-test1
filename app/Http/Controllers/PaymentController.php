@@ -5,50 +5,18 @@ namespace App\Http\Controllers;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use http\Env\Url;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
 use App\Models\Rezervari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Stripe\Charge;
-use Stripe\PaymentIntent;
 use Stripe\Stripe;
-use Stripe\StripeClient;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use UnexpectedValueException;
 
 class PaymentController extends Controller
 {
-    public function test()
-    {
-        return view('test');
-    }
-
-    public function home_test()
-    {
-        return view('index2');
-    }
-
-    public function destroy(Request $request)
-    {
-        $rows = Rezervari::where('stand', $request->stand)
-            ->where('from_date', $request->from_date)
-            ->where('to_date', $request->to_date)
-            ->where('price', $request->price)
-            ->where('name', $request->name)->get('id');
-        foreach ($rows as $elem) {
-            Rezervari::destroy($elem['id']);
-        }
-
-        return redirect(url('home_test#rezerva_loc'));
-    }
-
-    public function checkBooking(Request $request)
+    public function checkBooking(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $input = [
             'name' => $request->name,
@@ -82,7 +50,7 @@ class PaymentController extends Controller
             foreach ($period as $dt) {
                 $nights [] = $dt->format("d-m");
             }
-            $program = implode(',' , $nights);
+            $program = implode(',', $nights);
         }
 
         $data = [
@@ -149,23 +117,21 @@ class PaymentController extends Controller
                         'to_date' => $data['to_date'],
                     ]
                 );
-            }else{
-                Session::flash('type_error' , 'Oops! Se pare ca este deja o casuta luata in seara respectiva :)');
-                return redirect('home_test#rezerva_loc');
+            } else {
+                Session::flash('type_error', 'Oops! Se pare ca este deja o casuta luata in seara respectiva :)');
+                return redirect('/#rezerva_loc');
             }
-        }catch (\TypeError $typeError){
-            Session::flash('type_error' , $typeError->getMessage());
+        } catch (\TypeError $typeError) {
+            Session::flash('type_error', $typeError->getMessage());
             return redirect('home_test#rezerva_loc');
-        }catch (QueryException $queryException){
-            Session::flash('type_error' , $queryException->getMessage());
-            return redirect('home_test#rezerva_loc');
+        } catch (QueryException $queryException) {
+            Session::flash('type_error', $queryException->getMessage());
+            return redirect('/#rezerva_loc');
         }
 
     }
 
-    /**
-     */
-    public function checkout(Request $request)
+    public function checkout(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
 
         return view('checkout', [
@@ -181,7 +147,8 @@ class PaymentController extends Controller
     /**
      * @throws ApiErrorException
      */
-    public function pay(Request $request)
+
+    public function pay(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -199,24 +166,31 @@ class PaymentController extends Controller
 
 
             Session::flash('success', 'Payment successful!');
-            return to_route('test');
+            return redirect('/#rezerva_loc');
 
         } catch (CardException $cardException) {
             Session::flash('message', $cardException->getMessage());
             return back();
 
-        } catch (ApiErrorException $apiErrorException) {
-            Session::flash('message', $apiErrorException->getMessage());
-            return back();
-
-        } catch (MethodNotAllowedException $methodNotAllowedException) {
-            Session::flash('message', $methodNotAllowedException->getMessage());
-            return back();
-        } catch (UnexpectedValueException  $unexpectedValueException) {
-            Session::flash('message', $unexpectedValueException->getMessage());
+        } catch (\Exception $e) {
+            Session::flash('message', $e->getMessage());
             return back();
         }
 
+    }
+
+    public function destroy(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    {
+        $rows = Rezervari::where('stand', $request->stand)
+            ->where('from_date', $request->from_date)
+            ->where('to_date', $request->to_date)
+            ->where('price', $request->price)
+            ->where('name', $request->name)->get('id');
+        foreach ($rows as $elem) {
+            Rezervari::destroy($elem['id']);
+        }
+
+        return redirect(url('/#rezerva_loc'));
     }
 
 }

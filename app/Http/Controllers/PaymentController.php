@@ -32,8 +32,6 @@ class PaymentController extends Controller
         $stand = $input['stand'];
         $countStands = substr_count($stand, ',') + 1;
         $price = '';
-        $from_date = explode('-', $input['from_date']);
-        $to_date = explode('-', $input['to_date']);
 
         if ($input['to_date'] == null) {
             $price = ($countStands * 50);

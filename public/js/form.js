@@ -58,7 +58,7 @@ let spots = [];
 function addSpot(spot) {
   let spotExists = false;
   spots.forEach(el => {
-    if(el.slug === spot.slug) {
+    if(el.slug == spot.slug) {
       spotExists = true;
       return;
     }
@@ -67,7 +67,7 @@ function addSpot(spot) {
     //show delete spots toggle
     const deleteToggle = document.querySelector('.home-book__delete-spots');
     deleteToggle.classList.remove('display-none');
-
+    
     spots.push(spot);
     addSpotElement(spot);
   }
@@ -93,7 +93,7 @@ function generateSpotsInputText() {
   let value = "";
   spots.forEach(spot => {
     value = value + spot.slug
-    value = value + ",";
+    value = value + ","; 
   });
   value = value.slice(0, -1);
   document.querySelector('input#spots').value = value;
@@ -113,7 +113,7 @@ function addSpotElement(spot) {
     if(editMode) {
       newEl.remove();
       spots.forEach((item, i) => {
-        if(item.slug === spot.slug) {
+        if(item.slug == spot.slug) {
           spots.splice(i, 1);
         }
       });
@@ -131,7 +131,7 @@ bookTypeDay.addEventListener('click', () => toggleMultipleDaysInput('day'));
 bookTypeDays.addEventListener('click', () => toggleMultipleDaysInput('days'));
 
 function toggleMultipleDaysInput(type) {
-  if(type === 'day') {
+  if(type == 'day') {
     document.querySelector('#home-book-end-date').classList.add('display-none');
     document.querySelector('#home-book-fishermen').classList.add('display-none');
     bookTypeDay.classList.add('active-type-toggle');
@@ -145,15 +145,15 @@ function toggleMultipleDaysInput(type) {
 }
 
 //set default min date for inputs
-const startDateInput = document.getElementById('from_date');
-const endDateInput = document.getElementById('to_date');
+const startDateInput = document.getElementById('start_date');
+const endDateInput = document.getElementById('end_date');
 
 let today = new Date();
 let startDateMin = today.setDate(today.getDate() + 1);
 let endDateMin = today.setDate(today.getDate() + 1);
 
 Date.prototype.formatMMDDYYYY = function(){
-  return (this.getMonth() + 1) +
+  return (this.getMonth() + 1) + 
   "/" +  this.getDate() +
   "/" +  this.getFullYear();
 };

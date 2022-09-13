@@ -69,16 +69,24 @@
         </div>
         <div class="home-details__rules-body display-none">
             <div class="body-copy home-details__rules-item">
-                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului fata de prezentul regulament!
+                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va
+                achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului
+                fata de prezentul regulament!
             </div>
             <div class="body-copy home-details__rules-item">
-                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului fata de prezentul regulament!
+                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va
+                achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului
+                fata de prezentul regulament!
             </div>
             <div class="body-copy home-details__rules-item">
-                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului fata de prezentul regulament!
+                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va
+                achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului
+                fata de prezentul regulament!
             </div>
             <div class="body-copy home-details__rules-item">
-                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului fata de prezentul regulament!
+                Inainte de instalarea pe locul de pescuit, <span>PESCARUL</span>, va consulta prezentul regulament si va
+                achita taxa corespunzatoare pentru pescuit. Achitarea taxei reprezinta <span>ACORDUL</span> pescarului
+                fata de prezentul regulament!
             </div>
         </div>
     </div>
@@ -104,14 +112,14 @@
 </div>
 <div class="home-book container " id="rezerva_loc">
     @if (Session::has('type_error'))
-        <div class="alert alert-success text-center">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <div class="alert alert-success text-center" id="alert">
+            <a onclick="hideAlert()" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>{{ Session::get('type_error') }}</p>
         </div>
     @endif
-        @if (Session::has('success'))
+    @if (Session::has('success'))
         <div class="alert alert-success text-center">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            <a onclick="hideAlert()" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>{{ Session::get('success') }}</p>
         </div>
     @endif
@@ -177,7 +185,7 @@
         <form action="<?= route('confirm'); ?>" method="get" class="mt-24">
             @csrf
             <input type="text" name="stand" value="Casuta1,Casuta2,Casuta5,Casuta7">
-{{--            <input type="text" class="display-none" id="spots" name="spots" required>--}}
+            {{--            <input type="text" class="display-none" id="spots" name="spots" required>--}}
             <div class="input-group">
                 <label for="from_date" class="input-group__label">
                     Data rezervarii
@@ -223,10 +231,13 @@
         </h2>
         <p class="body-copy">
             Paradisul verde a pornit din dorinta de a prinde peste
-            Paradisul verde a pornit Paradisul verde a pornit din dorintaParadisul verde a pornit din dorinta de a prinde
+            Paradisul verde a pornit Paradisul verde a pornit din dorintaParadisul verde a pornit din dorinta de a
+            prinde
             <br>
             <br>
-            pesterinde pesterinta de a prinde peste Paradisul verde a pornParadisul verde a pornit din dorinta de a prinde peste Paradisul verde a pornit din dorinta de a prinde peste Paradisul verde a pornit din dorinta de a prinde peste
+            pesterinde pesterinta de a prinde peste Paradisul verde a pornParadisul verde a pornit din dorinta de a
+            prinde peste Paradisul verde a pornit din dorinta de a prinde peste Paradisul verde a pornit din dorinta de
+            a prinde peste
         </p>
     </div>
     <div class="home-about__images-container">
@@ -300,49 +311,50 @@
 <footer class="footer">
 
 </footer>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
 <script>
-    //rules section
-    const rulesToggle = document.querySelector(".home-details__rules-header");
-    const rulesBody = document.querySelector(".home-details__rules-body");
+//rules section
+const rulesToggle = document.querySelector(".home-details__rules-header");
+const rulesBody = document.querySelector(".home-details__rules-body");
 
-    rulesToggle.addEventListener('click', () => {
-        rulesBody.classList.contains('display-none') ? openRules() : closeRules();
-    });
+rulesToggle.addEventListener('click', () => {
+rulesBody.classList.contains('display-none') ? openRules() : closeRules();
+});
 
-    function closeRules() {
-        rulesBody.classList.add('display-none');
-        rulesToggle.classList.remove('home-details__rules-header--active');
-    }
+function hideAlert() {
+document.getElementById("alert").hide();
+}
 
-    function openRules() {
-        rulesBody.classList.remove('display-none');
-        rulesToggle.classList.add('home-details__rules-header--active');
-    }
+function closeRules() {
+rulesBody.classList.add('display-none');
+rulesToggle.classList.remove('home-details__rules-header--active');
+}
 
-    //navbar on mobile
-    const navbarToggle = document.querySelector(".navbar__menu-toggle");
-    const navbarMenu = document.querySelector(".navbar__menu-items");
+function openRules() {
+rulesBody.classList.remove('display-none');
+rulesToggle.classList.add('home-details__rules-header--active');
+}
 
-    navbarToggle.addEventListener('click', () => {
-        navbarToggle.classList.contains('navbar__menu-toggle--active') ? closeNavbar() : openNavbar();
-    });
+//navbar on mobile
+const navbarToggle = document.querySelector(".navbar__menu-toggle");
+const navbarMenu = document.querySelector(".navbar__menu-items");
 
-    function closeNavbar() {
-        navbarToggle.classList.remove('navbar__menu-toggle--active');
-        navbarMenu.classList.remove('navbar__menu-items--active');
-    }
+navbarToggle.addEventListener('click', () => {
+navbarToggle.classList.contains('navbar__menu-toggle--active') ? closeNavbar() : openNavbar();
+});
 
-    function openNavbar() {
-        navbarToggle.classList.add('navbar__menu-toggle--active');
-        navbarMenu.classList.add('navbar__menu-items--active');
-    }
+function closeNavbar() {
+navbarToggle.classList.remove('navbar__menu-toggle--active');
+navbarMenu.classList.remove('navbar__menu-items--active');
+}
 
-    window.addEventListener('scroll', () => closeNavbar());
+function openNavbar() {
+navbarToggle.classList.add('navbar__menu-toggle--active');
+navbarMenu.classList.add('navbar__menu-items--active');
+}
+
+window.addEventListener('scroll', () => closeNavbar());
 </script>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
-    defer
-></script>
 </body>
 
 </html>

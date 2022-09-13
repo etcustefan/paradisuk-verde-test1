@@ -16,7 +16,7 @@ use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    public function checkBooking(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function checkBooking(Request $request)
     {
         $input = [
             'name' => $request->name,
@@ -26,17 +26,23 @@ class PaymentController extends Controller
             'from_date' => $request->from_date,
             'to_date' => $request->to_date
         ];
-
-
+        $spotNames = \Config::get("spots_name");
         $days = date_diff(date_create($input['to_date']), date_create($input['from_date']))->days;
         $stand = $input['stand'];
+        $stands = [];
+        $stringStand = '';
+        $arrayStand = explode(',', $stand);
         $countStands = substr_count($stand, ',') + 1;
         $price = '';
-
         if ($input['to_date'] == null) {
             $price = ($countStands * 50);
             $input['count_fishers'] = $countStands;
             $program = '06:00 - 18:00';
+            foreach ($arrayStand as $i){
+                $stands [] = $spotNames['Locuri'][$i];
+            }
+            $stringStand = implode(',' ,$stands);
+
         } else if ($days > 0) {
             $price = ($countStands * 100 + $input['count_fishers'] * 100) * $days;
             $nights = [];
@@ -49,6 +55,11 @@ class PaymentController extends Controller
                 $nights [] = $dt->format("d-m");
             }
             $program = implode(',', $nights);
+
+            foreach ($arrayStand as $i){
+                $stands [] = $spotNames['Casute'][$i];
+            }
+            $stringStand = implode(',' ,$stands);
         }
 
         $data = [
@@ -61,6 +72,7 @@ class PaymentController extends Controller
             'nights' => $program,
             'price' => $price,
         ];
+
         if ($input['to_date'] === null) {
             $data['to_date'] = $input['from_date'];
         } else {
@@ -86,12 +98,9 @@ class PaymentController extends Controller
             ->where('nights', 'regexp', $regexpN)
             ->get();
 
-        $dataObj = [];
-        foreach ($booking as $obj) {
-            $dataObj [] = $obj;
-        }
+
         try {
-            if (empty($dataObj)) {
+            if (empty($booking)) {
                 Rezervari::updateOrCreate([
                     'name' => $data['name'],
                     'phone_number' => $data['phone_number'],
@@ -110,7 +119,7 @@ class PaymentController extends Controller
                         'price' => $data['price'],
                         'phone_number' => $data['phone_number'],
                         'count_fishers' => $data['count_fishers'],
-                        'stand' => $data['stand'],
+                        'stand' => $stringStand,
                         'from_date' => $data['from_date'],
                         'to_date' => $data['to_date'],
                     ]
@@ -129,7 +138,7 @@ class PaymentController extends Controller
 
     }
 
-    public function checkout(Request $request): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function checkout(Request $request)
     {
 
         return view('checkout', [
@@ -146,7 +155,7 @@ class PaymentController extends Controller
      * @throws ApiErrorException
      */
 
-    public function pay(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function pay(Request $request)
     {
         try {
             Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -177,7 +186,7 @@ class PaymentController extends Controller
 
     }
 
-    public function destroy(Request $request): \Illuminate\Routing\Redirector|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
+    public function destroy(Request $request)
     {
         $rows = Rezervari::where('stand', $request->stand)
             ->where('from_date', $request->from_date)

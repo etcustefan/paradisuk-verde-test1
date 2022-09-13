@@ -17,22 +17,24 @@
     <div class="navbar__mask"></div>
     <div class="container">
         <div class="navbar__logo">
-            <img src="./assets/images/logo.svg" alt="Paradisul verde" class="u-image-contain">
+            <a href="/">
+                <img src="./assets/images/logo.svg" alt="Paradisul verde" class="u-image-contain">
+            </a>
         </div>
         <div class="navbar__menu-items">
-            <a href="/" class="heading-4 navbar__menu-item">
+            <a href="#regulament" class="heading-4 navbar__menu-item">
                 Regulament
             </a>
-            <a href="/" class="heading-4 navbar__menu-item">
+            <a href="#prices" class="heading-4 navbar__menu-item">
                 Pret
             </a>
-            <a href="/" class="heading-4 navbar__menu-item">
+            <a href="#about_us" class="heading-4 navbar__menu-item">
                 Despre noi
             </a>
-            <a href="/" class="heading-4 navbar__menu-item">
+            <a href="#contact" class="heading-4 navbar__menu-item">
                 Contactează-ne
             </a>
-            <a href="/" class="navbar__menu-fb">
+            <a target="_blank" href="https://www.facebook.com/ParadisulVerdeFishing" class="navbar__menu-fb">
                 <img src="./assets/icons/facebook.svg" alt="Facebook" class="u-image-contain">
             </a>
         </div>
@@ -57,7 +59,7 @@
         <img src="./assets/images/banner.jpg" alt="Iaz Paradisul Verde" class="u-image-cover">
     </div>
 </header>
-<div class="home-details container">
+<div class="home-details container" id="regulament">
     <div class="home-details__rules">
         <div class="home-details__rules-header">
             <h4 class="heading-4">
@@ -90,6 +92,7 @@
             </div>
         </div>
     </div>
+    <div id="prices"></div>
     <div class="home-details__prices">
         <h2 class="heading-2">
             Preturi:
@@ -157,7 +160,9 @@
         <h3 class="heading-3">
             Alege un loc
         </h3>
-        <div class="home-book__map mt-16" id="map"></div>
+        <div class="home-book__map mt-16" id="map">
+
+        </div>
         <h4 class="heading-4 mt-40">
             Locuri alese:
         </h4>
@@ -184,19 +189,19 @@
         </div>
         <form action="<?= route('confirm'); ?>" method="get" class="mt-24">
             @csrf
-            <input type="text" name="stand" value="Casuta1,Casuta2,Casuta5,Casuta7">
-            {{--            <input type="text" class="display-none" id="spots" name="spots" required>--}}
+            <input type="text" class="display-none" id="spots" name="stand" required>
             <div class="input-group">
                 <label for="from_date" class="input-group__label">
                     Data rezervarii
                 </label>
-                <input type="date" name="from_date" id="from_date" class="input-group__input" min="2022-08-16" required>
+                <input type="date" name="from_date" id="start_date" class="input-group__input" min="2022-08-16"
+                       required>
             </div>
             <div class="input-group mt-16 display-none" id="home-book-end-date">
                 <label for="to_date" class="input-group__label">
                     Ultima zi
                 </label>
-                <input type="date" name="to_date" id="to_date" class="input-group__input" min="2022-08-17">
+                <input type="date" name="to_date" id="end_date" class="input-group__input" min="2022-08-17">
             </div>
             <div class="input-group display-none mt-16" id="home-book-fishermen">
                 <label for="count_fishers" class="input-group__label">
@@ -224,7 +229,7 @@
         </form>
     </div>
 </div>
-<div class="home-about container">
+<div class="home-about container" id="about_us">
     <div class="home-about__content">
         <h2 class="heading-2 mb-24">
             Despre noi
@@ -251,7 +256,7 @@
         </div>
     </div>
 </div>
-<div class="home-contact container">
+<div class="home-contact container" id="contact">
     <h2 class="heading-2 mb-32">
         Contactează-ne
     </h2>
@@ -269,7 +274,9 @@
                     <br>
                     Balta Paradisul Verde Epureni Isvoare
                 </div>
-                <a href="#" class="button mt-16">
+                <a target="_blank"
+                   href="https://ul.waze.com/ul?ll=47.27975307%2C27.42642403&navigate=yes&zoom=16&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
+                   class="button mt-16">
                     Deschide pe waze
                 </a>
             </div>
@@ -296,7 +303,7 @@
                 +40798 895 985
             </div>
         </div>
-        <a href="#" class="home-contact__details-row">
+        <a target="_blank" href="https://www.facebook.com/ParadisulVerdeFishing" class="home-contact__details-row">
             <div class="home-contact__details-icon">
                 <img src="./assets/icons/facebook.svg" class="u-image-contain">
             </div>
@@ -311,50 +318,53 @@
 <footer class="footer">
 
 </footer>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
 <script>
-//rules section
-const rulesToggle = document.querySelector(".home-details__rules-header");
-const rulesBody = document.querySelector(".home-details__rules-body");
+    //rules section
+    const rulesToggle = document.querySelector(".home-details__rules-header");
+    const rulesBody = document.querySelector(".home-details__rules-body");
 
-rulesToggle.addEventListener('click', () => {
-rulesBody.classList.contains('display-none') ? openRules() : closeRules();
-});
+    rulesToggle.addEventListener('click', () => {
+        rulesBody.classList.contains('display-none') ? openRules() : closeRules();
+    });
 
-function hideAlert() {
-document.getElementById("alert").hide();
-}
+    function hideAlert() {
+        document.getElementById("alert").hide();
+    }
 
-function closeRules() {
-rulesBody.classList.add('display-none');
-rulesToggle.classList.remove('home-details__rules-header--active');
-}
+    function closeRules() {
+        rulesBody.classList.add('display-none');
+        rulesToggle.classList.remove('home-details__rules-header--active');
+    }
 
-function openRules() {
-rulesBody.classList.remove('display-none');
-rulesToggle.classList.add('home-details__rules-header--active');
-}
+    function openRules() {
+        rulesBody.classList.remove('display-none');
+        rulesToggle.classList.add('home-details__rules-header--active');
+    }
 
-//navbar on mobile
-const navbarToggle = document.querySelector(".navbar__menu-toggle");
-const navbarMenu = document.querySelector(".navbar__menu-items");
+    //navbar on mobile
+    const navbarToggle = document.querySelector(".navbar__menu-toggle");
+    const navbarMenu = document.querySelector(".navbar__menu-items");
 
-navbarToggle.addEventListener('click', () => {
-navbarToggle.classList.contains('navbar__menu-toggle--active') ? closeNavbar() : openNavbar();
-});
+    navbarToggle.addEventListener('click', () => {
+        navbarToggle.classList.contains('navbar__menu-toggle--active') ? closeNavbar() : openNavbar();
+    });
 
-function closeNavbar() {
-navbarToggle.classList.remove('navbar__menu-toggle--active');
-navbarMenu.classList.remove('navbar__menu-items--active');
-}
+    function closeNavbar() {
+        navbarToggle.classList.remove('navbar__menu-toggle--active');
+        navbarMenu.classList.remove('navbar__menu-items--active');
+    }
 
-function openNavbar() {
-navbarToggle.classList.add('navbar__menu-toggle--active');
-navbarMenu.classList.add('navbar__menu-items--active');
-}
+    function openNavbar() {
+        navbarToggle.classList.add('navbar__menu-toggle--active');
+        navbarMenu.classList.add('navbar__menu-items--active');
+    }
 
-window.addEventListener('scroll', () => closeNavbar());
+    window.addEventListener('scroll', () => closeNavbar());
 </script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbwRPqCTIr9dl4VimCKXvTnJHgesbwsVo&callback=initMap&v=weekly"
+    defer
+></script>
 </body>
 
 </html>

@@ -1,0 +1,40 @@
+<?php
+return [
+    'Casute' => [
+        'C1' => 'Casuta 1',
+        'C2' => 'Casuta 2',
+        'C3' => 'Casuta 3',
+        'C4' => 'Casuta 4',
+        'C5' => 'Casuta 5',
+        'C6' => 'Casuta 6',
+        'C7' => 'Casuta 7',
+        'C8' => 'Casuta 8'
+    ],
+    'Locuri' => [
+        'L1' => 'Stand 1',
+        'L2' => 'Stand 2',
+        'L3' => 'Stand 3',
+        'L4' => 'Stand 4',
+        'L5' => 'Stand 5',
+        'L6' => 'Stand 6',
+        'L7' => 'Stand 7',
+        'L8' => 'Stand 8',
+        'L9' => 'Stand 9',
+        'L10' => 'Stand 10',
+        'L11' => 'Stand 11',
+        'L12' => 'Stand 12',
+        'L13' => 'Stand 13',
+        'L14' => 'Stand 14',
+        'L15' => 'Stand 15',
+        'S1' => 'Salcia 1',
+        'S2' => 'Salcia 2',
+        'S3' => 'Salcia 3',
+        'S4' => 'Salcia 4',
+        'S5' => 'Salcia 5',
+        'S6' => 'Salcia 6',
+        'S7' => 'Salcia 7',
+        'S8' => 'Salcia 8',
+        'S9' => 'Salcia 9',
+        'S10' => 'Salcia 10',
+    ]
+];

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 use \Illuminate\Contracts\View\Factory;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Contracts\Foundation\Application;
@@ -13,8 +15,12 @@ class Html2PdfController extends Controller
         return view('html2pdf.index');
     }
 
-    public function generate(Request $request): int
+    public function generate (Request $request)
     {
-        return 0;
+        if ($request->has('download')) {
+            $pdf = PDF::loadView('pdf_download');
+            return $pdf->download('pdf_download.pdf');
+        }
+        return view('html2pdf.index');
     }
 }

@@ -26,8 +26,9 @@ Route::get('/delete', [PaymentController::class, 'destroy'])->name('delete');
 Route::get('checkout', [PaymentController::class, 'checkout'])->name('checkout');
 Route::post('pay', [PaymentController::class, 'pay'])->name('pay');
 
-Route::get('html2pdf' , [Html2PdfController::class , 'generate'])->name('html2pdf');
-Route::get('html2pdf' , [Html2PdfController::class , 'generate'])->name('html2pdf');
+Route::get('generatePdf',array('as'=>'generatePdf', 'uses'=>'Html2PdfController@generatePdf'));
+
+Route::get('testpdf' , [Html2PdfController::class , 'index'])->name('html2pdf');
 
 
 

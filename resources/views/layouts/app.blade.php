@@ -69,6 +69,9 @@
         @yield('content')
     </main>
 </div>
+<main>
+    @yield('html2pdf')
+</main>
 </body>
 <script>
     //rules section

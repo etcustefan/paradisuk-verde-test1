@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\StripeController;
+use App\Http\Controllers\Html2PdfController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +26,8 @@ Route::get('/delete', [PaymentController::class, 'destroy'])->name('delete');
 Route::get('checkout', [PaymentController::class, 'checkout'])->name('checkout');
 Route::post('pay', [PaymentController::class, 'pay'])->name('pay');
 
-
+Route::get('html2pdf' , [Html2PdfController::class , 'generate'])->name('html2pdf');
+Route::get('html2pdf' , [Html2PdfController::class , 'generate'])->name('html2pdf');
 
 
 
